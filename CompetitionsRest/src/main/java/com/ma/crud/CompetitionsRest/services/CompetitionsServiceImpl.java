@@ -20,7 +20,7 @@ public class CompetitionsServiceImpl implements CompetitionsService {
     private CompetitionsRepository competitionsRepository;
 
     @Override
-    public void save(CompetitionDto competition) {
+    public CompetitionDto save(CompetitionDto competition) {
         CompetitionEntity competitionEntity = new CompetitionEntity(
             competition.getTitle(),
             competition.getCategory(),
@@ -32,7 +32,19 @@ public class CompetitionsServiceImpl implements CompetitionsService {
             competition.getJudgeId()
         );
         try {
-            competitionsRepository.save(competitionEntity);
+            CompetitionEntity createdCompetition = competitionsRepository.save(competitionEntity);
+            CompetitionDto createdCompetitionDto = new CompetitionDto(
+                createdCompetition.getTitle(),
+                createdCompetition.getDescription(),
+                createdCompetition.getFirstPlacePrize(),
+                createdCompetition.getCategory(),
+                createdCompetition.getMaxPoints(),
+                createdCompetition.getSubmissionDeadline(),
+                createdCompetition.isFinished(),
+                createdCompetition.getJudgeId()
+            );
+            createdCompetitionDto.setId(createdCompetition.getId());
+            return createdCompetitionDto;
         } catch (DataAccessException exception) {
             logger.error(exception.getMessage());
             throw exception;

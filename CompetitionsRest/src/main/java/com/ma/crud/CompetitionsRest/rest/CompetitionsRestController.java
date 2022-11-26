@@ -22,9 +22,8 @@ public class CompetitionsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody CompetitionDto competition) {
-        competitionsService.save(competition);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CompetitionDto> save(@Valid @RequestBody CompetitionDto competition) {
+        return ResponseEntity.ok(competitionsService.save(competition));
     }
 
     @PutMapping
