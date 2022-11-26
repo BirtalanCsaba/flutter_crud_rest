@@ -1,0 +1,8 @@
+spring:
+  datasource.url: jdbc:postgresql://localhost:5432/flutter_crud_ma
+  datasource.username: postgres
+  datasource.password: test123
+  jpa:
+    hibernate:
+      ddl-auto: update
+
