@@ -13,7 +13,8 @@ class HttpService {
   static Future<List<Competition>> get() async {
     log.info("Getting competitions on: /competitions");
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8080/competitions'));
+        .get(Uri.parse('http://10.0.2.2:8080/competitions'))
+        .timeout(const Duration(seconds: 2));
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
@@ -38,7 +39,8 @@ class HttpService {
       Uri.parse('http://10.0.2.2:8080/competitions'),
       body: json.encode(competition.toJson()),
       headers: {"Content-Type": "application/json"},
-    );
+    )
+        .timeout(const Duration(seconds: 2));
     if (response.statusCode != 200) {
       log.severe("Post method failed.");
       throw Exception('Failed to create competitions');
@@ -52,7 +54,8 @@ class HttpService {
       Uri.parse('http://10.0.2.2:8080/competitions'),
       body: json.encode(competition.toJson()),
       headers: {"Content-Type": "application/json"},
-    );
+    )
+        .timeout(const Duration(seconds: 2));
     if (response.statusCode != 200) {
       log.severe("Put method failed.");
       throw Exception('Failed to update competition');
@@ -63,7 +66,8 @@ class HttpService {
     log.info("Deleting competition with id ($id) on: /competitions/$id");
     final response = await http.delete(
         Uri.parse('http://10.0.2.2:8080/competitions/$id'),
-    );
+    )
+        .timeout(const Duration(seconds: 2));
     if (response.statusCode != 200) {
       log.severe("Delete method failed.");
       throw Exception('Failed to delete competitions');

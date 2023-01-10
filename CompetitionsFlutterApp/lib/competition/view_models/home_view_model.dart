@@ -27,7 +27,7 @@ class HomeViewModel extends ChangeNotifier {
     List<Competition>? items = [];
     try {
       items = await HttpService.get();
-    } on Exception catch(ex) {
+    } catch(ex) {
       log.severe(ex.toString());
       throw Exception("Cannot fetch data");
     }
@@ -41,7 +41,7 @@ class HomeViewModel extends ChangeNotifier {
     Competition createdCompetition;
     try {
       createdCompetition = await HttpService.create(competition);
-    } on Exception catch(ex) {
+    } catch(ex) {
       log.severe(ex.toString());
       throw Exception("Cannot add data");
     }

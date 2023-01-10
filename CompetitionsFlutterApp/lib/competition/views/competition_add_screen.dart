@@ -55,6 +55,17 @@ class _CompetitionAddScreenState extends State<CompetitionAddScreen> {
     }
   }
 
+  showSnackBar(BuildContext context, String text)
+  {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(text),
+      duration: const Duration(seconds: 5),//default is 4s
+    );
+    // Find the Scaffold in the widget tree and use it to show a SnackBar.
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +146,7 @@ class _CompetitionAddScreenState extends State<CompetitionAddScreen> {
                   child: const Text('Select date'),
                 ),
                 OutlinedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         var newComp = Competition.all(
                             judgeId: judgeId,
@@ -147,7 +158,12 @@ class _CompetitionAddScreenState extends State<CompetitionAddScreen> {
                             submissionDeadline: submissionDeadline,
                             isFinished: isFinished
                         );
-                        _homeViewModel.add(newComp);
+                        try {
+                          await _homeViewModel.add(newComp);
+                        } catch (ex) {
+                          showSnackBar(context, "Something went wrong");
+                        }
+                        if (!mounted) return;
                         Navigator.of(context).pop();
                       }
                     },
