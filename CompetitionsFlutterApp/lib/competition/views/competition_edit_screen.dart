@@ -71,6 +71,17 @@ class _CompetitionEditScreenState extends State<CompetitionEditScreen> {
     }
   }
 
+  showSnackBar(BuildContext context, String text)
+  {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(text),
+      duration: const Duration(seconds: 5),//default is 4s
+    );
+    // Find the Scaffold in the widget tree and use it to show a SnackBar.
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,7 +176,11 @@ class _CompetitionEditScreenState extends State<CompetitionEditScreen> {
                             isFinished: _competition.isFinished
                         );
                         newComp.id = _competition.id;
-                        _homeViewModel.update(newComp);
+                        try {
+                          _homeViewModel.update(newComp);
+                        } catch(ex) {
+                          showSnackBar(context, "Something went wrong");
+                        }
                         Navigator.of(context).pop();
                       }
                     },
