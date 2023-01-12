@@ -1,5 +1,6 @@
 import 'package:fluttercrud/competition/models/competition_model.dart';
 import 'package:fluttercrud/competition/repository/competitions_repository.dart';
+import 'package:collection/collection.dart';
 
 class CompetitionsRepositoryImpl extends CompetitionsRepository {
   List<Competition> competitions = [];
@@ -62,11 +63,16 @@ class CompetitionsRepositoryImpl extends CompetitionsRepository {
   }
 
   @override
-  Future<Competition> findById(int? id) async {
+  Future<Competition?> findById(int? id) async {
     if (id == null) {
       throw Exception("Id is null");
     }
-    Competition foundCompetition = competitions.firstWhere((element) => element.id == id);
+    Competition? foundCompetition = competitions.firstWhereOrNull(
+            (element) => element.id == id
+    );
+    if (foundCompetition == null) {
+      return null;
+    }
     var theComp = Competition.all(
       judgeId: foundCompetition.judgeId,
       title: foundCompetition.title,

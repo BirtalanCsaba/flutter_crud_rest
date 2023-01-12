@@ -36,8 +36,40 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> addFromWebsocket(Competition competition) async {
+    log.info("Adding new competition from websocket: ${competition.toJson()}.");
+    Competition? foundCompetition = await competitionsRepository.findById(competition.id);
+    if (foundCompetition == null) {
+      await competitionsRepository.add(competition);
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateFromWebsocket(Competition competition) async {
+    log.info("Updating competition from websocket: ${competition.toJson()}.");
+    Competition? foundCompetition = await competitionsRepository.findById(competition.id);
+    if (foundCompetition == null) {
+      await competitionsRepository.add(competition);
+    }
+    else {
+      await competitionsRepository.update(competition);
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteFromWebsocket(int competitionId) async {
+    log.info("Deleting competition from websocket: $competitionId.");
+    Competition? foundCompetition = await competitionsRepository
+        .findById(competitionId);
+    if (foundCompetition != null) {
+      await competitionsRepository.delete(competitionId);
+    }
+    notifyListeners();
+  }
+
   Future<void> add(Competition competition) async {
     log.info("Adding a competition: ${competition.toJson()}.");
+
     Competition createdCompetition;
     try {
       createdCompetition = await HttpService.create(competition);
@@ -76,7 +108,7 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Competition> findById(int? id) async {
+  Future<Competition?> findById(int? id) async {
     log.info("Finding competition by id: $id.");
     return competitionsRepository.findById(id);
   }

@@ -35,7 +35,7 @@ class _CompetitionEditScreenState extends State<CompetitionEditScreen> {
       if (mounted) {
         var competition = await _homeViewModel.findById(id);
         setState(() {
-          _competition = competition;
+          _competition = competition!;
           _titleInputController.value = TextEditingValue(text: _competition.title);
           _categoryInputController.value =
               TextEditingValue(text: _competition.category);
