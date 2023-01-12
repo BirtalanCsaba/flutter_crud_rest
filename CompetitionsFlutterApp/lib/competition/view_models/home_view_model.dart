@@ -77,7 +77,7 @@ class HomeViewModel extends ChangeNotifier {
       log.severe(ex.toString());
       throw Exception("Cannot add data");
     }
-    await competitionsRepository.add(createdCompetition);
+    // await competitionsRepository.add(createdCompetition);
     notifyListeners();
   }
 
