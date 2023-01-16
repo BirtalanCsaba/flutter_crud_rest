@@ -85,6 +85,8 @@ class _AppStartState extends State<AppStart> {
       config: StompConfig(
         url: 'ws://10.0.2.2:8080/stomp-endpoint',
         onConnect: onConnect,
+        reconnectDelay: const Duration(seconds: 5),
+        connectionTimeout: const Duration(seconds: 5),
         beforeConnect: () async {
           print('waiting to connect...');
           await Future.delayed(const Duration(milliseconds: 200));
